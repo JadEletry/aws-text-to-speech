@@ -8,7 +8,6 @@ This project demonstrates an AWS Lambda function that converts text to speech us
 - `lambda_function.zip`: Zipped Lambda function code.
 - `main.tf`: Terraform configuration file for setting up AWS resources.
 - `invoke_lambda.py`: Python script to invoke the Lambda function.
-- `README.md`: Project documentation.
 
 ## Setup Instructions
 
