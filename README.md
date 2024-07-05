@@ -21,8 +21,8 @@ This project demonstrates an AWS Lambda function that converts text to speech us
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/your-username/aws-tts-project.git
-    cd aws-tts-project
+    git clone https://github.com/JadEletry/aws-text-to-speech.git
+    cd aws-text-to-speech
     ```
 
 2. **Initialize Terraform**:
@@ -70,33 +70,3 @@ This is the Terraform configuration file that defines the AWS resources used in 
 ### invoke_lambda.py
 
 This Python script is used to invoke the Lambda function. It takes user input for text, language, and voice, and calls the Lambda function to perform the text-to-speech conversion.
-
-### README.md
-
-This file contains the project documentation, including setup instructions and a detailed explanation of the project components.
-
-## Available Languages and Voices
-
-Here are the available languages and voices you can use with this project:
-
-- **en-US**: Joanna, Matthew, Ivy, Justin, Kendra, Kimberly, Salli, Joey
-- **en-GB**: Amy, Emma, Brian
-- **es-ES**: Miguel, Penelope, Lucia
-- **fr-FR**: Celine, Lea, Mathieu
-- **de-DE**: Hans, Marlene, Vicki
-
-## Author
-
-- **Your Name**
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contributing
-
-Contributions are welcome! Please fork this repository and submit a pull request with your changes.
-
-## Acknowledgments
-
-- Special thanks to the [Terraform](https://www.terraform.io/) and [AWS](https://aws.amazon.com/) teams for their excellent tools and documentation.
