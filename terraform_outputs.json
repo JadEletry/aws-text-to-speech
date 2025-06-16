@@ -1,0 +1,7 @@
+{
+  "lambda_function_name": {
+    "sensitive": false,
+    "type": "string",
+    "value": "TextToSpeechFunction-01f5679db634e2c9"
+  }
+}
