@@ -1,72 +1,139 @@
-# AWS Text-to-Speech Converter
+# 🗣️ AWS Text-to-Speech Converter
 
-This project demonstrates an AWS Lambda function that converts text to speech using AWS Polly. The project is managed using Infrastructure as Code (IaC) with Terraform.
+This project demonstrates an AWS Lambda function that converts text to speech using AWS Polly. The Lambda function stores the resulting audio file in an S3 bucket, and the project is fully managed using Infrastructure as Code (IaC) with Terraform.
 
-## Project Structure
+---
 
-- `lambda_function.py`: Python code for the Lambda function.
-- `lambda_function.zip`: Zipped Lambda function code.
-- `main.tf`: Terraform configuration file for setting up AWS resources.
-- `invoke_lambda.py`: Python script to invoke the Lambda function.
+## 🗂 Project Structure
 
-## Setup Instructions
+- `lambda_function.py`: Python code for the AWS Lambda function.
+- `lambda_function.zip`: Zipped version of the Lambda code (required by Terraform).
+- `main.tf`: Terraform configuration to provision all required AWS resources (Lambda, S3, IAM).
+- `invoke_lambda.py`: Python script to trigger the Lambda function and pass user input.
+- `terraform_outputs.json`: JSON file that stores dynamic output values (e.g., Lambda function name) from Terraform.
 
-### Prerequisites
+---
 
-- **AWS Account**: You need an AWS account with the necessary permissions.
-- **Terraform**: Installed on your local machine. [Terraform Installation Guide](https://learn.hashicorp.com/tutorials/terraform/install-cli)
-- **Python and Boto3**: Installed on your local machine. [Python Installation Guide](https://www.python.org/downloads/)
+## ⚙️ Setup Instructions
 
-### Steps
+### ✅ Prerequisites
 
-1. **Clone the Repository**:
-    ```sh
-    git clone https://github.com/JadEletry/aws-text-to-speech.git
-    cd aws-text-to-speech
-    ```
+- **AWS Account** with programmatic access (access key & secret key).
+- **Terraform** installed. [Install Terraform](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+- **Python 3.8+** and **Boto3** installed. [Install Python](https://www.python.org/downloads/)
 
-2. **Initialize Terraform**:
-    ```sh
-    terraform init
-    ```
+---
 
-3. **Apply Terraform Configuration**:
-    ```sh
-    terraform apply
-    ```
-   - Confirm the plan by typing `yes` when prompted.
+### 🛠 Steps
 
-4. **Invoke Lambda Function**:
-    - Use the `invoke_lambda.py` script to test the function.
+#### 1. **Clone the Repository**
 
-    ```sh
-    python invoke_lambda.py
-    ```
+```bash
+git clone https://github.com/JadEletry/aws-text-to-speech.git
+cd aws-text-to-speech
+```
 
-    - Follow the prompts to enter the text, select a language, and choose a voice.
+#### 2. **Zip the Lambda Code**
 
-5. **Clean Up**:
-    - Delete the resources using Terraform when done to avoid charges:
+Before deploying, zip the Lambda function code:
 
-    ```sh
-    terraform destroy
-    ```
-    - Confirm the destruction by typing `yes` when prompted.
+```bash
+Compress-Archive -Path lambda_function.py -DestinationPath lambda_function.zip -Force
+```
 
-## Detailed Explanation
+#### 3. **Initialize Terraform**
 
-### lambda_function.py
+```bash
+terraform init
+```
 
-This is the Python code for the Lambda function that uses AWS Polly to convert text to speech and stores the resulting audio file in an S3 bucket.
+#### 4. **Apply Terraform Configuration**
 
-### lambda_function.zip
+```bash
+terraform apply
+```
 
-The Lambda function code must be zipped before being uploaded to AWS Lambda. This file contains the zipped version of `lambda_function.py`.
+- Type `yes` when prompted.
+- This provisions:
+  - A secure S3 bucket
+  - An AWS Lambda function
+  - IAM roles and policies
+  - Environment variables (e.g., bucket name)
+  - Permissions for Polly and S3
 
-### main.tf
+#### 5. **Export Terraform Outputs**
 
-This is the Terraform configuration file that defines the AWS resources used in this project, including the S3 bucket, IAM roles, and the Lambda function.
+After deploying, export the outputs to a JSON file:
 
-### invoke_lambda.py
+```bash
+terraform output -json > terraform_outputs.json
+```
 
-This Python script is used to invoke the Lambda function. It takes user input for text, language, and voice, and calls the Lambda function to perform the text-to-speech conversion.
+This file is used by the Python script to dynamically fetch the deployed Lambda function name.
+
+---
+
+### ▶️ 6. **Run the App**
+
+```bash
+python invoke_lambda.py
+```
+
+- Follow the prompts to:
+  - Enter the text to convert
+  - Select a language
+  - Choose a voice
+- The function will upload an MP3 file to the S3 bucket
+
+Example output:
+```
+Text to Speech conversion successful! File saved as output_<uuid>.mp3
+```
+
+---
+
+### 🧹 7. **Clean Up Resources**
+
+To avoid ongoing AWS charges, run:
+
+```bash
+terraform destroy
+```
+
+Type `yes` to confirm when prompted.
+
+---
+
+## 📄 File Descriptions
+
+### `lambda_function.py`
+
+The Lambda function code. Uses AWS Polly to synthesize speech and uploads it to S3. The bucket name is injected from Terraform as an environment variable.
+
+### `lambda_function.zip`
+
+Zipped deployment package for the Lambda function. Terraform uses this to upload the code.
+
+### `main.tf`
+
+Defines all AWS infrastructure:
+- S3 bucket with encryption
+- Lambda function with IAM role
+- Polly + S3 permissions
+- Environment variables
+- Terraform outputs
+
+### `invoke_lambda.py`
+
+CLI app to:
+- Take user input
+- Dynamically load the Lambda function name
+- Call the Lambda function using Boto3
+- Display the response and audio filename
+
+---
+
+## 💡 Notes
+
+- You can check the uploaded MP3s in the AWS Console → S3 bucket
+- To expose the files publicly or generate pre-signed download links, modify the S3 bucket policy or use `s3.generate_presigned_url()`
