@@ -23,6 +23,7 @@ resource "aws_s3_bucket" "tts_bucket" {
   }
 }
 
+<<<<<<< HEAD
 resource "aws_s3_bucket_policy" "tts_bucket_policy" {
   bucket = aws_s3_bucket.tts_bucket.id
 
@@ -43,6 +44,8 @@ resource "aws_s3_bucket_policy" "tts_bucket_policy" {
   })
 }
 
+=======
+>>>>>>> e6652f01fbb25e32f0c64759e4233adad403cae6
 resource "aws_iam_role" "lambda_role" {
   name = "lambda-execution-role"
 
@@ -83,6 +86,7 @@ resource "aws_lambda_function" "tts_lambda" {
   handler          = "lambda_function.lambda_handler"
   runtime          = "python3.8"
   source_code_hash = filebase64sha256("lambda_function.zip")
+<<<<<<< HEAD
 
   timeout = 15
 
@@ -92,6 +96,8 @@ resource "aws_lambda_function" "tts_lambda" {
     }
   }
 
+=======
+>>>>>>> e6652f01fbb25e32f0c64759e4233adad403cae6
 }
 
 resource "aws_lambda_permission" "allow_invoke" {
@@ -100,9 +106,12 @@ resource "aws_lambda_permission" "allow_invoke" {
   function_name = aws_lambda_function.tts_lambda.function_name
   principal     = "lambda.amazonaws.com"
 }
+<<<<<<< HEAD
 
 output "lambda_function_name" {
   value = aws_lambda_function.tts_lambda.function_name
 }
 
 
+=======
+>>>>>>> e6652f01fbb25e32f0c64759e4233adad403cae6

@@ -20,6 +20,7 @@ def lambda_handler(event, context):
     audio_stream = response['AudioStream'].read()
     
     s3 = boto3.client('s3')
+
     bucket_name = os.environ['BUCKET_NAME']
     file_name = f'output_{uuid.uuid4()}.mp3'
     s3.put_object(Bucket=bucket_name, Key=file_name, Body=audio_stream)

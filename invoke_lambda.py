@@ -22,6 +22,7 @@ def display_languages_and_voices():
 def invoke_lambda(text, language_code, voice_id):
     client = boto3.client('lambda', region_name='ca-central-1')  # Specify the correct region corresponding to your AWS console
     response = client.invoke(
+        
         FunctionName=LAMBDA_FUNCTION_NAME,
         InvocationType='RequestResponse',
         Payload=json.dumps({
